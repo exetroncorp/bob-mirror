@@ -1,2 +1,251 @@
 boostbox
 https://unifiedprocess.ai/
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://ton-litellm:4000",
+    "ANTHROPIC_API_KEY": "fake-key",
+    "ANTHROPIC_MODEL": "devstral",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "devstral-small",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1",
+    "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1",
+    "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING": "1",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  }
+}
+
+----
+https://github.com/affaan-m/ECC/tree/main
+----
+#!/usr/bin/env bash
+# continue_to_anthropic.sh
+# Extrait la config Continue et injecte dans ~/.claude/settings.json
+
+set -euo pipefail
+
+CONTINUE_ENV="/home/coder/.continue/.env"
+CONTINUE_CONFIG="/home/coder/.continue/config.yaml"
+CLAUDE_SETTINGS="${HOME}/.claude/settings.json"
+
+# ── 1. Lire la clé API depuis .env ────────────────────────────────────────────
+if [[ ! -f "$CONTINUE_ENV" ]]; then
+  echo "❌  Fichier introuvable : $CONTINUE_ENV" >&2
+  exit 1
+fi
+
+API_KEY=$(grep -E '^\s*OPENAI_API_KEY\s*=' "$CONTINUE_ENV" \
+          | head -1 \
+          | sed 's/.*=\s*//' \
+          | tr -d '"'"'"' \
+          | xargs)
+
+# Fallback sur d'autres noms courants
+if [[ -z "$API_KEY" ]]; then
+  API_KEY=$(grep -E '^\s*API_KEY\s*=' "$CONTINUE_ENV" \
+            | head -1 \
+            | sed 's/.*=\s*//' \
+            | tr -d '"'"'"' \
+            | xargs)
+fi
+
+if [[ -z "$API_KEY" ]]; then
+  echo "⚠️  Aucune clé API trouvée dans $CONTINUE_ENV — utilisation de 'fake-key'" >&2
+  API_KEY="fake-key"
+fi
+
+# ── 2. Lire l'endpoint et le modèle depuis config.yaml ───────────────────────
+if [[ ! -f "$CONTINUE_CONFIG" ]]; then
+  echo "❌  Fichier introuvable : $CONTINUE_CONFIG" >&2
+  exit 1
+fi
+
+# Extraire le premier apiBase trouvé (LiteLLM proxy)
+BASE_URL=$(grep -E '^\s*apiBase\s*:' "$CONTINUE_CONFIG" \
+           | head -1 \
+           | sed 's/.*:\s*//' \
+           | tr -d '"'"'"' \
+           | xargs)
+
+# Extraire le premier model trouvé (ligne "model:" hors commentaire)
+MODEL=$(grep -E '^\s*model\s*:' "$CONTINUE_CONFIG" \
+        | head -1 \
+        | sed 's/.*:\s*//' \
+        | tr -d '"'"'"' \
+        | xargs)
+
+# Extraire un modèle léger (autocomplete / haiku) — cherche "tabAutocomplete" ou second model
+HAIKU_MODEL=$(awk '/tabAutocomplete/,/^[^ ]/' "$CONTINUE_CONFIG" \
+              | grep -E '^\s*model\s*:' \
+              | head -1 \
+              | sed 's/.*:\s*//' \
+              | tr -d '"'"'"' \
+              | xargs)
+
+# Fallbacks
+[[ -z "$BASE_URL" ]] && BASE_URL="http://localhost:4000"
+[[ -z "$MODEL"    ]] && MODEL="devstral"
+[[ -z "$HAIKU_MODEL" ]] && HAIKU_MODEL="$MODEL"
+
+# ── 3. Afficher ce qui a été trouvé ──────────────────────────────────────────
+echo "🔍  Valeurs extraites depuis Continue :"
+echo "    API_KEY      = ${API_KEY:0:8}…"
+echo "    BASE_URL     = $BASE_URL"
+echo "    MODEL        = $MODEL"
+echo "    HAIKU_MODEL  = $HAIKU_MODEL"
+echo ""
+
+# ── 4. Créer/mettre à jour ~/.claude/settings.json ───────────────────────────
+mkdir -p "$(dirname "$CLAUDE_SETTINGS")"
+
+# Si settings.json existe déjà, on merge — sinon on crée
+if [[ -f "$CLAUDE_SETTINGS" ]]; then
+  EXISTING=$(cat "$CLAUDE_SETTINGS")
+else
+  EXISTING="{}"
+fi
+
+# Utilise python3 pour merger proprement le JSON
+python3 - <<PYEOF
+import json, sys
+
+existing = json.loads('''${EXISTING}''')
+
+patch = {
+    "env": {
+        "ANTHROPIC_BASE_URL":                        "${BASE_URL}",
+        "ANTHROPIC_API_KEY":                         "${API_KEY}",
+        "ANTHROPIC_MODEL":                           "${MODEL}",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL":             "${HAIKU_MODEL}",
+        "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY":"1",
+        "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS":   "1",
+        "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING": "1",
+        "DISABLE_TELEMETRY":                         "1",
+        "DISABLE_ERROR_REPORTING":                   "1",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC":  "1"
+    }
+}
+
+# Merge env block (ne pas écraser les clés existantes hors scope)
+if "env" not in existing:
+    existing["env"] = {}
+existing["env"].update(patch["env"])
+
+with open("${CLAUDE_SETTINGS}", "w") as f:
+    json.dump(existing, f, indent=2)
+    f.write("\n")
+
+print("✅  ${CLAUDE_SETTINGS} mis à jour.")
+PYEOF
+---
+
+#!/usr/bin/env bash
+# continue_to_codex.sh
+# Extrait la config Continue et génère ~/.codex/config.toml
+
+set -euo pipefail
+
+CONTINUE_ENV="/home/coder/.continue/.env"
+CONTINUE_CONFIG="/home/coder/.continue/config.yaml"
+CODEX_DIR="/home/coder/.codex"
+CODEX_CONFIG="$CODEX_DIR/config.toml"
+
+# ── 1. Lire la clé API depuis .env ────────────────────────────────────────────
+if [[ ! -f "$CONTINUE_ENV" ]]; then
+  echo "❌  Fichier introuvable : $CONTINUE_ENV" >&2
+  exit 1
+fi
+
+# Cherche OPENAI_API_KEY puis API_KEY comme fallback
+API_KEY_VAR=$(grep -E '^\s*(OPENAI_API_KEY|API_KEY)\s*=' "$CONTINUE_ENV" \
+              | head -1 \
+              | sed 's/\s*=.*//' \
+              | xargs)
+
+API_KEY_VAL=$(grep -E '^\s*(OPENAI_API_KEY|API_KEY)\s*=' "$CONTINUE_ENV" \
+              | head -1 \
+              | sed 's/.*=\s*//' \
+              | tr -d '"'"'"' \
+              | xargs)
+
+if [[ -z "$API_KEY_VAR" ]]; then
+  echo "⚠️  Aucune clé API trouvée dans $CONTINUE_ENV — utilisation de OPENAI_API_KEY=fake-key" >&2
+  API_KEY_VAR="OPENAI_API_KEY"
+  API_KEY_VAL="fake-key"
+fi
+
+# ── 2. Lire l'endpoint et le modèle depuis config.yaml ───────────────────────
+if [[ ! -f "$CONTINUE_CONFIG" ]]; then
+  echo "❌  Fichier introuvable : $CONTINUE_CONFIG" >&2
+  exit 1
+fi
+
+BASE_URL=$(grep -E '^\s*apiBase\s*:' "$CONTINUE_CONFIG" \
+           | head -1 \
+           | sed 's/.*:\s*//' \
+           | tr -d '"'"'"' \
+           | xargs)
+
+MODEL=$(grep -E '^\s*model\s*:' "$CONTINUE_CONFIG" \
+        | head -1 \
+        | sed 's/.*:\s*//' \
+        | tr -d '"'"'"' \
+        | xargs)
+
+# Fallbacks
+[[ -z "$BASE_URL" ]] && BASE_URL="http://localhost:4000"
+[[ -z "$MODEL"    ]] && MODEL="devstral"
+
+# Normalise : retire le /v1 trailing si présent (Codex l'ajoute lui-même)
+BASE_URL="${BASE_URL%/v1}"
+BASE_URL="${BASE_URL%/}"
+
+# ── 3. Afficher ce qui a été trouvé ──────────────────────────────────────────
+echo "🔍  Valeurs extraites depuis Continue :"
+echo "    ENV_VAR  = $API_KEY_VAR"
+echo "    API_KEY  = ${API_KEY_VAL:0:8}…"
+echo "    BASE_URL = $BASE_URL"
+echo "    MODEL    = $MODEL"
+echo ""
+
+# ── 4. Exporter la clé dans l'environnement courant (et .bashrc si absent) ───
+export "$API_KEY_VAR"="$API_KEY_VAL"
+
+if ! grep -q "export ${API_KEY_VAR}=" "${HOME}/.bashrc" 2>/dev/null; then
+  echo "export ${API_KEY_VAR}=\"${API_KEY_VAL}\"" >> "${HOME}/.bashrc"
+  echo "✅  $API_KEY_VAR ajouté dans ~/.bashrc"
+else
+  # Met à jour la valeur existante
+  sed -i "s|^export ${API_KEY_VAR}=.*|export ${API_KEY_VAR}=\"${API_KEY_VAL}\"|" "${HOME}/.bashrc"
+  echo "✅  $API_KEY_VAR mis à jour dans ~/.bashrc"
+fi
+
+# ── 5. Créer/remplacer ~/.codex/config.toml ──────────────────────────────────
+mkdir -p "$CODEX_DIR"
+
+# Si config.toml existe déjà, on sauvegarde
+if [[ -f "$CODEX_CONFIG" ]]; then
+  cp "$CODEX_CONFIG" "${CODEX_CONFIG}.bak"
+  echo "📦  Backup : ${CODEX_CONFIG}.bak"
+fi
+
+cat > "$CODEX_CONFIG" <<TOML
+# ~/.codex/config.toml
+# Généré par continue_to_codex.sh depuis Continue config
+# $(date)
+
+model          = "${MODEL}"
+model_provider = "litellm"
+
+[model_providers.litellm]
+name     = "LiteLLM proxy"
+base_url = "${BASE_URL}"
+env_key  = "${API_KEY_VAR}"
+wire_api = "chat"
+TOML
+
+echo "✅  $CODEX_CONFIG généré."
+echo ""
+echo "⚡  Pour appliquer la clé dans le shell courant :"
+echo "    export ${API_KEY_VAR}=\"${API_KEY_VAL}\""
+echo "    (ou recharge : source ~/.bashrc)"
