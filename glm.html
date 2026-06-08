@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Bob IDE - Votre Partenaire IA pour le Développement Logiciel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .slide {
+            width: 1280px;
+            height: 720px;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+        }
+        .title-slide {
+            background-color: #0F62FE;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .title-slide h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            text-align: center;
+        }
+        .title-slide h2 {
+            font-size: 1.5em;
+            font-weight: normal;
+            text-align: center;
+        }
+        .content-slide {
+            padding: 40px;
+        }
+        .content-slide h2 {
+            color: #0F62FE;
+            font-size: 2em;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #0F62FE;
+            padding-bottom: 10px;
+        }
+        .content-slide ul {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .content-slide li {
+            margin-bottom: 15px;
+        }
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.8em;
+            color: #666;
+        }
+        .two-column {
+            display: flex;
+            gap: 30px;
+        }
+        .column {
+            flex: 1;
+        }
+        .highlight {
+            color: #0F62FE;
+            font-weight: bold;
+        }
+        .dark-slide {
+            background-color: #0F172A;
+            color: white;
+        }
+        .dark-slide h2 {
+            color: #60A5FA;
+            border-bottom-color: #60A5FA;
+        }
+        .dark-slide li {
+            color: #E2E8F0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide title-slide">
+        <h1>IBM Bob IDE</h1>
+        <h2>Votre Partenaire IA pour le Développement Logiciel</h2>
+    </div>
+
+    <!-- Slide 2: Introduction -->
+    <div class="slide content-slide">
+        <h2>Qu'est-ce qu'IBM Bob ?</h2>
+        <ul>
+            <li>Un partenaire IA pour le cycle de vie du développement logiciel (SDLC)</li>
+            <li>Augmente vos workflows existants</li>
+            <li>Travaille en toute confiance avec des bases de code réelles</li>
+            <li>Capacités clés :
+                <ul>
+                    <li>Génération de code</li>
+                    <li>Complétion de code</li>
+                    <li>Refactorisation et débogage</li>
+                    <li>Documentation</li>
+                    <li>Réponse aux questions</li>
+                    <li>Automatisation des tâches</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">2/44</div>
+    </div>
+
+    <!-- Slide 3: Agenda -->
+    <div class="slide content-slide">
+        <h2>Ordre du jour</h2>
+        <ul>
+            <li>1. Initialisation de projet avec /init et AGENTS.md</li>
+            <li>2. Complétion de code et prédiction de la prochaine édition</li>
+            <li>3. Codage littéral - Génération de code à partir de commentaires</li>
+            <li>4. Planification et implémentation de fonctionnalités complexes</li>
+            <li>5. Modes spécialisés (Code, Ask, Plan, Advanced, Orchestrator)</li>
+            <li>6. MCP (Model Context Protocol) - Étendre les capacités de Bob</li>
+            <li>7. Bob Shell - L'IA au-delà de votre éditeur</li>
+            <li>8. Cas d'utilisation réels</li>
+            <li>9. Perspectives stratégiques</li>
+            <li>10. Spécificités Power Systems</li>
+        </ul>
+        <div class="slide-number">3/44</div>
+    </div>
+
+    <!-- Slide 4: Demo 1 Context -->
+    <div class="slide content-slide">
+        <h2>Démo 1 : Initialisation de projet avec /init</h2>
+        <ul>
+            <li>Problème : Les LLMs sont sans état, chaque nouvelle conversation commence sans mémoire</li>
+            <li>Solution : La commande /init génère des fichiers AGENTS.md</li>
+            <li>AGENTS.md fournit un contexte persistant à Bob</li>
+            <li>Fichiers AGENTS.md :
+                <ul>
+                    <li>Fichier principal dans le répertoire racine</li>
+                    <li>Fichiers spécifiques aux modes dans le dossier .bob/</li>
+                </ul>
+            </li>
+            <li>Bob applique automatiquement le contexte des fichiers AGENTS.md</li>
+        </ul>
+        <div class="slide-number">4/44</div>
+    </div>
+
+    <!-- Slide 5: Demo 1 Action -->
+    <div class="slide content-slide">
+        <h2>Démo 1 : Comment /init fonctionne</h2>
+        <ul>
+            <li>1. Exécutez /init en mode Code</li>
+            <li>2. Bob scanne le projet</li>
+            <li>3. Génère AGENTS.md (Racine + dossier .bob/)</li>
+            <li>4. Bob applique automatiquement le contexte</li>
+            <li>Avantages :
+                <ul>
+                    <li>Bob comprend votre projet instantanément</li>
+                    <li>Pas besoin de répéter le contexte à chaque conversation</li>
+                    <li>Contexte spécifique à chaque mode</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">5/44</div>
+    </div>
+
+    <!-- Slide 6: Demo 2 -->
+    <div class="slide content-slide">
+        <h2>Démo 2 : Complétion de code intelligente</h2>
+        <ul>
+            <li>Tab completion : Suggestions contextuelles basées sur l'ensemble du codebase</li>
+            <li>Next Edit Prediction : Saute automatiquement aux emplacements d'édition probables</li>
+            <li>Cas d'utilisation : Ajout d'une fonction validateEmail
+                <ul>
+                    <li>Écrivez un commentaire décrivant la fonction</li>
+                    <li>Appuyez sur Tab pour accepter la suggestion</li>
+                    <li>Appuyez sur Tab pour sauter à l'emplacement d'édition suivant</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Accélération du développement</li>
+                    <li>Réduction des erreurs</li>
+                    <li>Flux de travail plus fluide</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">6/44</div>
+    </div>
+
+    <!-- Slide 7: Demo 3 -->
+    <div class="slide content-slide">
+        <h2>Démo 3 : Codage littéral</h2>
+        <ul>
+            <li>Concept : Écrivez des instructions en langage naturel directement dans l'éditeur</li>
+            <li>Bob génère l'implémentation en place et montre les modifications</li>
+            <li>Cas d'utilisation : "The backend is unreliable. We need a retry logic here."
+                <ul>
+                    <li>Bob génère une logique de retry autour du code existant</li>
+                    <li>Affiche les modifications sous forme de diff</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Modifications précises et ciblées</li>
+                    <li>Pas besoin de changer de contexte</li>
+                    <li>Révision avant acceptation</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">7/44</div>
+    </div>
+
+    <!-- Slide 8: Demo 4 -->
+    <div class="slide content-slide">
+        <h2>Démo 4 : Planification et implémentation</h2>
+        <ul>
+            <li>Flux de travail : Plan Mode → Code Mode</li>
+            <li>Étape 1 : Plan Mode
+                <ul>
+                    <li>Créez un plan pour la fonctionnalité</li>
+                    <li>Bob pose des questions de clarification</li>
+                    <li>Génère des documents de planification</li>
+                </ul>
+            </li>
+            <li>Étape 2 : Revue et approbation du plan
+                <ul>
+                    <li>Vérifiez que le plan correspond à vos intentions</li>
+                    <li>Approuvez le plan pour passer à l'implémentation</li>
+                </ul>
+            </li>
+            <li>Étape 3 : Code Mode
+                <ul>
+                    <li>Bob implémente la fonctionnalité de bout en bout</li>
+                    <li>Modifie plusieurs fichiers selon le plan approuvé</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">8/44</div>
+    </div>
+
+    <!-- Slide 9: Customization -->
+    <div class="slide content-slide">
+        <h2>Personnalisation et contrôle</h2>
+        <ul>
+            <li>Modes personnalisés :
+                <ul>
+                    <li>Créez des personas spécialisés (ex: Product Manager)</li>
+                    <li>Définissez des instructions et des accès aux outils spécifiques</li>
+                </ul>
+            </li>
+            <li>Règles :
+                <ul>
+                    <li>Instructions au niveau du projet pour la cohérence d'équipe</li>
+                    <li>Exemples : "Toujours inclure JSDoc pour les fonctions publiques"</li>
+                    <li>Contrôle de version des règles</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Cohérence à travers l'équipe</li>
+                    <li>Standards de codage uniformes</li>
+                    <li>Onboarding facilité</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">9/44</div>
+    </div>
+
+    <!-- Slide 10: Initial Conclusion -->
+    <div class="slide content-slide">
+        <h2>Conclusion</h2>
+        <ul>
+            <li>Le contexte est roi : AGENTS.md fournit une mémoire persistante</li>
+            <li>Codage accéléré : Next Edit Prediction et Tab Completion</li>
+            <li>Implémentation autonome : Plan Mode + Code Mode</li>
+            <li>Standardisation d'équipe : Modes personnalisés et Règles</li>
+            <li>Prochaines étapes :
+                <ul>
+                    <li>Essayez IBM Bob IDE aujourd'hui</li>
+                    <li>Visitez bob.ibm.com/docs/ide</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">10/44</div>
+    </div>
+
+    <!-- Slide 11: Specialized Modes -->
+    <div class="slide content-slide">
+        <h2>Modes spécialisés pour chaque tâche</h2>
+        <ul>
+            <li>Code Mode : Écrire, modifier et refactoriser du code</li>
+            <li>Ask Mode : Obtenir des réponses et des explications</li>
+            <li>Plan Mode : Planifier et concevoir avant l'implémentation</li>
+            <li>Advanced Mode : Accéder à des capacités étendues</li>
+            <li>Orchestrator Mode : Coordonner des projets complexes</li>
+            <li>Chaque mode est conçu pour des scénarios de développement spécifiques</li>
+        </ul>
+        <div class="slide-number">11/44</div>
+    </div>
+
+    <!-- Slide 12: Demo 5: Ask Mode -->
+    <div class="slide content-slide">
+        <h2>Démo 5 : Mode Ask - Comprendre votre codebase</h2>
+        <ul>
+            <li>Fonctionnalités :
+                <ul>
+                    <li>Accès en lecture seule</li>
+                    <li>Parcourir la documentation</li>
+                    <li>Obtenir des explications</li>
+                </ul>
+            </li>
+            <li>Cas d'utilisation : "Explain the authentication flow in this project"
+                <ul>
+                    <li>Bob analyse le code et fournit une explication détaillée</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Onboarding plus rapide</li>
+                    <li>Compréhension du codebase existant</li>
+                    <li>Documentation automatique</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">12/44</div>
+    </div>
+
+    <!-- Slide 13: Demo 6: Orchestrator Mode -->
+    <div class="slide content-slide">
+        <h2>Démo 6 : Mode Orchestrator - Coordonner des projets complexes</h2>
+        <ul>
+            <li>Fonctionnalités :
+                <ul>
+                    <li>Décomposition des tâches</li>
+                    <li>Coordination des modes</li>
+                    <li>Gestion des workflows</li>
+                </ul>
+            </li>
+            <li>Cas d'utilisation : "Implement user profile feature"
+                <ul>
+                    <li>L'Orchestrator décompose en sous-tâches</li>
+                    <li>Délègue aux modes Plan → Code → Ask</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Gestion de projets complexes</li>
+                    <li>Coordination automatique</li>
+                    <li>Optimisation des workflows</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">13/44</div>
+    </div>
+
+    <!-- Slide 14: Demo 7: MCP -->
+    <div class="slide content-slide">
+        <h2>Démo 7 : MCP - Étendre les capacités de Bob</h2>
+        <ul>
+            <li>Concept : USB-C pour l'IA - interface standardisée pour connecter des outils externes</li>
+            <li>Fonctionnalités :
+                <ul>
+                    <li>Se connecter à des serveurs locaux/distance</li>
+                    <li>Accéder à des bases de données/API</li>
+                    <li>Intégrations personnalisées</li>
+                </ul>
+            </li>
+            <li>Cas d'utilisation : Interroger la base de données de l'entreprise et générer un rapport</li>
+            <li>Avantages :
+                <ul>
+                    <li>Extensibilité</li>
+                    <li>Intégrations d'entreprise</li>
+                    <li>Capacités personnalisées</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">14/44</div>
+    </div>
+
+    <!-- Slide 15: Demo 8: Bob Shell -->
+    <div class="slide content-slide">
+        <h2>Démo 8 : Bob Shell - L'IA au-delà de votre éditeur</h2>
+        <ul>
+            <li>Fonctionnalités :
+                <ul>
+                    <li>Interface terminal</li>
+                    <li>Même assistance IA</li>
+                    <li>Sensible au contexte</li>
+                </ul>
+            </li>
+            <li>Cas d'utilisation : "bob" dans le terminal → Session interactive → "Explain @src/main.js"</li>
+            <li>Avantages :
+                <ul>
+                    <li>Utilisation dans le terminal</li>
+                    <li>Pas besoin de quitter la ligne de commande</li>
+                    <li>Intégration dans les workflows existants</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">15/44</div>
+    </div>
+
+    <!-- Slide 16: Use Case 1 -->
+    <div class="slide content-slide">
+        <h2>Cas d'utilisation 1 : Modernisation de code hérité</h2>
+        <ul>
+            <li>Scénario : Application monolithique volumineuse</li>
+            <li>Solution Bob :
+                <ul>
+                    <li>1. Ask Mode : Comprendre l'architecture</li>
+                    <li>2. Plan Mode : Créer une stratégie de modernisation</li>
+                    <li>3. Code Mode : Refactoriser de manière incrémentielle</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Migration contrôlée</li>
+                    <li>Maintien de la stabilité</li>
+                    <li>Réduction des risques</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">16/44</div>
+    </div>
+
+    <!-- Slide 17: Use Case 2 -->
+    <div class="slide content-slide">
+        <h2>Cas d'utilisation 2 : Intégration d'API</h2>
+        <ul>
+            <li>Scénario : Se connecter à un service de paiement externe</li>
+            <li>Solution Bob :
+                <ul>
+                    <li>1. Plan Mode : Concevoir le modèle d'intégration</li>
+                    <li>2. Code Mode : Implémenter le client API</li>
+                    <li>3. Codage littéral : Ajouter la gestion des erreurs</li>
+                    <li>4. MCP : Configurer le service de paiement</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Intégration rapide</li>
+                    <li>Gestion robuste des erreurs</li>
+                    <li>Configuration flexible</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">17/44</div>
+    </div>
+
+    <!-- Slide 18: Use Case 3 -->
+    <div class="slide content-slide">
+        <h2>Cas d'utilisation 3 : Onboarding et documentation</h2>
+        <ul>
+            <li>Scénario : Nouveau membre de l'équipe</li>
+            <li>Solution Bob :
+                <ul>
+                    <li>1. /init : Créer le contexte du projet</li>
+                    <li>2. Ask Mode : Expliquer l'architecture</li>
+                    <li>3. Code Mode : Générer la documentation</li>
+                    <li>4. Mode personnalisé : Créer un persona mentor</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Onboarding plus rapide</li>
+                    <li>Documentation automatique</li>
+                    <li>Transfer de connaissances</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">18/44</div>
+    </div>
+
+    <!-- Slide 19: Use Case 4 -->
+    <div class="slide content-slide">
+        <h2>Cas d'utilisation 4 : Tests et assurance qualité</h2>
+        <ul>
+            <li>Scénario : Besoin d'une couverture de test complète</li>
+            <li>Solution Bob :
+                <ul>
+                    <li>1. Plan Mode : Concevoir la stratégie de test</li>
+                    <li>2. Code Mode : Générer des tests unitaires</li>
+                    <li>3. Codage littéral : Ajouter des cas limites</li>
+                    <li>4. Command Tools : Exécuter les tests</li>
+                </ul>
+            </li>
+            <li>Avantages :
+                <ul>
+                    <li>Couverture plus élevée</li>
+                    <li>Détection précoce des bugs</li>
+                    <li>Sécurité de régression</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">19/44</div>
+    </div>
+
+    <!-- Slide 20: Synthesis -->
+    <div class="slide content-slide">
+        <h2>Synthèse : L'écosystème complet de Bob IDE</h2>
+        <ul>
+            <li>Caractéristiques principales :
+                <ul>
+                    <li>/init (Contexte persistant)</li>
+                    <li>Modes (Spécialisés pour chaque tâche)</li>
+                    <li>Outils (Lire, Éditer, Commande)</li>
+                    <li>Règles (Standardisation d'équipe)</li>
+                </ul>
+            </li>
+            <li>Extensions :
+                <ul>
+                    <li>MCP (Intégrations externes)</li>
+                    <li>Shell (Au-delà de l'éditeur)</li>
+                </ul>
+            </li>
+            <li>Patterns :
+                <ul>
+                    <li>Plan → Code (Fonctionnalités de bout en bout)</li>
+                    <li>Ask → Learn (Comprendre le codebase)</li>
+                    <li>Codage littéral (Génération en place)</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">20/44</div>
+    </div>
+
+    <!-- Slide 21: Updated Conclusion -->
+    <div class="slide content-slide">
+        <h2>Transformez votre workflow de développement</h2>
+        <ul>
+            <li>Le contexte est roi</li>
+            <li>Codage accéléré par l'IA</li>
+            <li>Implémentation autonome de bout en bout</li>
+            <li>Standardisation d'équipe</li>
+            <li>Plateforme extensible</li>
+            <li>Démarrez votre voyage avec IBM Bob IDE</li>
+            <li>Ressources : bob.ibm.com/docs/ide</li>
+        </ul>
+        <div class="slide-number">21/44</div>
+    </div>
+
+    <!-- Slide 22: Strategic Context -->
+    <div class="slide content-slide dark-slide">
+        <h2>Du passage des outils aux systèmes de livraison</h2>
+        <ul>
+            <li>"AI changed software development. Now it must change delivery."</li>
+            <li>Problème : Productivité individuelle ≠ cohérence organisationnelle</li>
+            <li>Le paradoxe : Productivité individuelle plus élevée vs cohérence organisationnelle critique</li>
+            <li>L'accélération sans alignement crée un écart entre la production locale et les résultats d'entreprise</li>
+        </ul>
+        <div class="slide-number">22/44</div>
+    </div>
+
+    <!-- Slide 23: Developer Identity -->
+    <div class="slide content-slide">
+        <h2>L'identité du développeur précède la productivité</h2>
+        <ul>
+            <li>Aperçu clé : Tous les équipes ne résolvent pas le même problème</li>
+            <li>Variations :
+                <ul>
+                    <li>Équipes Platform vs Product</li>
+                    <li>Environnements réglementés vs Outils internes</li>
+                    <li>Tolérance à l'automatisation</li>
+                    <li>Attentes de gouvernance</li>
+                    <li>Signaux de vélocité</li>
+                    <li>Posture de risque</li>
+                </ul>
+            </li>
+            <li>Les systèmes doivent s'adapter à l'identité du développeur, pas l'inverse</li>
+        </ul>
+        <div class="slide-number">23/44</div>
+    </div>
+
+    <!-- Slide 24: Four Themes -->
+    <div class="slide content-slide">
+        <h2>Les quatre thèmes critiques de la livraison avec AI</h2>
+        <ul>
+            <li>1. Autonomiser les équipes (workflows sensibles à l'identité)</li>
+            <li>2. Sécurité shift-left (gouvernance intégrée)</li>
+            <li>3. Modernisation à grande échelle (cartographie des dépendances)</li>
+            <li>4. Contrôle des coûts (routage intelligent des modèles)</li>
+        </ul>
+        <div class="slide-number">24/44</div>
+    </div>
+
+    <!-- Slide 25: Theme 1 -->
+    <div class="slide content-slide">
+        <h2>Thème 1 : Autonomiser les équipes</h2>
+        <ul>
+            <li>Workflows sensibles à l'identité (adapter aux rôles/responsabilités)</li>
+            <li>Workflows d'agents gouvernés par l'homme (les agents proposent, les développeurs révisent)</li>
+            <li>Sensibilité au contexte inter-systèmes (raisonner à travers les dépôts/services)</li>
+            <li>Connaissances des développeurs et flux (réduire la charge cognitive, préserver le flux)</li>
+        </ul>
+        <div class="slide-number">25/44</div>
+    </div>
+
+    <!-- Slide 26: Theme 2 -->
+    <div class="slide content-slide">
+        <h2>Thème 2 : Sécurité shift-left</h2>
+        <ul>
+            <li>Sécurité pré-merge et gouvernance policy-as-code (évaluer pendant la rédaction/PRs)</li>
+            <li>Validation continue de la sécurité du code et de l'infrastructure (surface les vulnérabilités au fur et à mesure)</li>
+            <li>Limites et traçabilité de bout en bout (pistes d'audit, accès basé sur les rôles)</li>
+        </ul>
+        <div class="slide-number">26/44</div>
+    </div>
+
+    <!-- Slide 27: Theme 3 -->
+    <div class="slide content-slide">
+        <h2>Thème 3 : Modernisation à grande échelle</h2>
+        <ul>
+            <li>Cartographie des dépendances à travers les patrimoines hérités (visibilité sur le comportement du système)</li>
+            <li>Séquençage de modernisation noté par risque (cibler d'abord les faibles risques, renforcer la confiance)</li>
+            <li>Sensibilité à l'impact inter-systèmes (évaluer les contrats de service/dépendances en aval)</li>
+        </ul>
+        <div class="slide-number">27/44</div>
+    </div>
+
+    <!-- Slide 28: Theme 4 -->
+    <div class="slide content-slide">
+        <h2>Thème 4 : Contrôle des coûts</h2>
+        <ul>
+            <li>Routage intelligent des modèles (tâches routinières → modèles légers, raisonnement complexe → modèles à haute capacité)</li>
+            <li>Application des seuils budgétaires (limites économiques prévisibles)</li>
+            <li>Efficacité et optimisations des coûts (réduire les déchets opérationnels, suivre les améliorations)</li>
+        </ul>
+        <div class="slide-number">28/44</div>
+    </div>
+
+    <!-- Slide 29: Enterprise Decision -->
+    <div class="slide content-slide">
+        <h2>La décision de livraison d'entreprise : construire, adopter ou orchestrer</h2>
+        <ul>
+            <li>Trois chemins :
+                <ul>
+                    <li>1. Construire en interne (assembler modèles, harnais, gouvernance)</li>
+                    <li>2. Assembler une chaîne d'outils AI (adopter plusieurs outils + construire l'orchestration)</li>
+                    <li>3. Intégrer un partenaire SDLC (déployer un système de bout en bout)</li>
+                </ul>
+            </li>
+            <li>La plupart des entreprises feront une combinaison</li>
+            <li>Les systèmes doivent fonctionner comme un tout cohérent</li>
+        </ul>
+        <div class="slide-number">29/44</div>
+    </div>
+
+    <!-- Slide 30: SDLC Partner -->
+    <div class="slide content-slide">
+        <h2>L'avènement du partenaire SDLC</h2>
+        <ul>
+            <li>Définition : Un système qui :
+                <ul>
+                    <li>1. Comprend l'identité du développeur</li>
+                    <li>2. Harmonise les métriques de productivité</li>
+                    <li>3. Intègre la gouvernance par conception</li>
+                    <li>4. Orchestre les agents avec contrôle</li>
+                    <li>5. Se connecte au substrat d'entreprise</li>
+                    <li>6. Évolue tout en assurant la cohérence</li>
+                </ul>
+            </li>
+            <li>"Un outil peut accélérer le travail, mais un partenaire aligne le travail avec les objectifs d'entreprise."</li>
+        </ul>
+        <div class="slide-number">30/44</div>
+    </div>
+
+    <!-- Slide 31: IBM Bob as SDLC Partner -->
+    <div class="slide content-slide">
+        <h2>IBM Bob : Votre partenaire SDLC d'entreprise</h2>
+        <ul>
+            <li>Ce dont les entreprises ont besoin :
+                <ul>
+                    <li>1. Orchestrer les humains et les agents AI ensemble</li>
+                    <li>2. Gouvernance intégrée dans les workflows</li>
+                    <li>3. IA à travers les architectures complexes et les systèmes hérités</li>
+                    <li>4. Visibilité sur les coûts, les opérations, les résultats de livraison</li>
+                </ul>
+            </li>
+            <li>L'approche de Bob : Partenaire SDLC de bout en bout intégrant ces capacités directement</li>
+        </ul>
+        <div class="slide-number">31/44</div>
+    </div>
+
+    <!-- Slide 32: Customer Testimonials -->
+    <div class="slide content-slide">
+        <h2>Témoignages de clients</h2>
+        <ul>
+            <li>Veran Pokornić, APIS IT : "We achieved 100% refactored code. Bob solved everything."</li>
+            <li>Saireshan Govender, Blue Pearl : "Highly collaborative. Brought structure, speed, and confidence."</li>
+            <li>Todd Stewart, Heartland Co-op : "Brand new developers could quickly understand and start contributing."</li>
+            <li>Uwe Graf, EasiRun : "Faster progress while maintaining clear human accountability."</li>
+        </ul>
+        <div class="slide-number">32/44</div>
+    </div>
+
+    <!-- Slide 33: Updated Conclusion with Strategic Perspective -->
+    <div class="slide content-slide dark-slide">
+        <h2>L'avenir est la livraison orchestrée par l'IA</h2>
+        <ul>
+            <li>Des outils aux systèmes</li>
+            <li>L'identité du développeur compte</li>
+            <li>Quatre thèmes d'entreprise</li>
+            <li>L'impératif du partenaire SDLC</li>
+            <li>"Le vrai défi auquel fait face l'IA d'entreprise n'est pas la capacité—c'est la coordination."</li>
+            <li>Démarrez votre voyage avec IBM Bob IDE</li>
+            <li>Ressources : bob.ibm.com/docs/ide</li>
+        </ul>
+        <div class="slide-number">33/44</div>
+    </div>
+
+    <!-- Slide 34: Power Systems Challenges -->
+    <div class="slide content-slide">
+        <h2>Défis spécifiques à Power Systems</h2>
+        <ul>
+            <li>IBM i :
+                <ul>
+                    <li>Pool de talents seniors en réduction</li>
+                    <li>Connaissance tribale > documentation</li>
+                    <li>Risque de continuité des affaires</li>
+                    <li>Backlog de modernisation</li>
+                </ul>
+            </li>
+            <li>AIX :
+                <ul>
+                    <li>Scripts shell/LPAR configs non documentés</li>
+                    <li>Patching manuel fragile</li>
+                    <li>Pas de runbooks Ansible</li>
+                </ul>
+            </li>
+            <li>"Que se passe-t-il quand notre développeur RPG senior prend sa retraite ?"</li>
+        </ul>
+        <div class="slide-number">34/44</div>
+    </div>
+
+    <!-- Slide 35: Generic AI vs IBM Bob for Power -->
+    <div class="slide content-slide">
+        <h2>Pourquoi l'IA générique crée plus de risques sur Power</h2>
+        <div class="two-column">
+            <div class="column">
+                <h3>La plupart des outils AI :</h3>
+                <ul>
+                    <li>Sensibilité minimale à IBM i ou AIX</li>
+                    <li>Les développeurs passent du temps à coacher l'outil sur les bases</li>
+                    <li>Gouvernance minimale, piste d'audit ou workflow d'approbation</li>
+                    <li>Manque de contexte au niveau du système</li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3>IBM Bob :</h3>
+                <ul>
+                    <li>Sensibilité profonde aux dépôts et dépendances</li>
+                    <li>Fluidité RPG/CL/DDS/SQL/COBOL/C++</li>
+                    <li>Patterns de modernisation sûrs et reproductibles</li>
+                    <li>Gouvernance intégrée et auditabilité</li>
+                    <li>Gating d'approbation humaine à chaque étape</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">35/44</div>
+    </div>
+
+    <!-- Slide 36: Bob Power Capabilities -->
+    <div class="slide content-slide">
+        <h2>Bob : Le multiplicateur de force pour Power Systems</h2>
+        <ul>
+            <li>1. Comprendre : Les nouveaux membres de l'équipe saisissent les systèmes hérités complexes en heures, pas en mois</li>
+            <li>2. Expliquer : Documentation et diagrammes générés automatiquement préservent les connaissances institutionnelles</li>
+            <li>3. Refactoriser : Standardiser la structure du code de manière cohérente et sûre</li>
+            <li>4. Générer : Code RPG/C++/Java contextuel pour accélérer la livraison de nouvelles fonctionnalités</li>
+            <li>5. Transformer : Exécuter votre roadmap de modernisation : RPG II/III à ILE RPG, SQL intégré</li>
+            <li>6. Tester : Tests unitaires générés automatiquement avec RPGUNIT ou analyse de couverture Java/C/C++</li>
+        </ul>
+        <div class="slide-number">36/44</div>
+    </div>
+
+    <!-- Slide 37: Power Systems Demos -->
+    <div class="slide content-slide">
+        <h2>Démonstrations pour Power Systems</h2>
+        <ul>
+            <li>1. IBM i : Démo RPG/Cobol (développeur IBM i)</li>
+            <li>2. AIX : Créer et expliquer un playbook Ansible pour LVM (DevOps)</li>
+            <li>3. Modernisation Java avec Bob (Backend Dev/DevOps/Build)</li>
+            <li>4. Entreprise : Documentation de code pour un dépôt</li>
+            <li>5. IBM Bob pour Watsonx Orchestrate : Créer des outils MCP et des agents (ingénieur AI)</li>
+        </ul>
+        <div class="slide-number">37/44</div>
+    </div>
+
+    <!-- Slide 38: Bobalytics -->
+    <div class="slide content-slide">
+        <h2>Bobalytics : Optimisation intelligente auto-aware</h2>
+        <ul>
+            <li>Concept : Bob va au-delà du reporting pour optimiser continuellement l'exécution</li>
+            <li>Cycle :
+                <ul>
+                    <li>1. Exécution d'entreprise optimisée (intégrée avec les workflows/politiques)</li>
+                    <li>2. Signaux système agrégés (résultats de workflow, coût, performance)</li>
+                    <li>3. Gains composés de coût et de performance (tarification de passage de modèle)</li>
+                    <li>4. Bobalytics applique des optimisations (routage sémantique, efficacité des prompts, sélection de modèle)</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">38/44</div>
+    </div>
+
+    <!-- Slide 39: Adoption Roadmap -->
+    <div class="slide content-slide">
+        <h2>Feuille de route d'adoption d'IBM Bob</h2>
+        <ul>
+            <li>1. Plan & Play (Secondes à 1 jour) :
+                <ul>
+                    <li>Explorer Bob dans un dépôt existant</li>
+                    <li>Exécuter des tâches guidées</li>
+                    <li>Identifier les tâches à haute friction</li>
+                </ul>
+            </li>
+            <li>2. Adopter (<30 jours) :
+                <ul>
+                    <li>Sélectionner un cas d'utilisation à fort impact</li>
+                    <li>Déployer les modes Bob</li>
+                    <li>Se connecter via MCP</li>
+                </ul>
+            </li>
+            <li>3. Accélérer (30-90 jours) :
+                <ul>
+                    <li>Activer l'orchestration multi-agents</li>
+                    <li>Étendre à des domaines supplémentaires</li>
+                    <li>Intégrer dans CI/CD</li>
+                </ul>
+            </li>
+            <li>4. Échelle (+3 mois) :
+                <ul>
+                    <li>Déployer à l'échelle de l'organisation</li>
+                    <li>Appliquer les politiques à grande échelle</li>
+                    <li>Suivre les résultats et optimiser</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">39/44</div>
+    </div>
+
+    <!-- Slide 40: Pricing -->
+    <div class="slide content-slide">
+        <h2>Tarification d'IBM Bob</h2>
+        <ul>
+            <li>Plans SaaS :
+                <ul>
+                    <li>Essai gratuit : $0/30 jours, 40 Bobcoins</li>
+                    <li>Pro : $20/mois, 40 Bobcoins</li>
+                    <li>Pro+ : $60/mois, 160 Bobcoins</li>
+                    <li>Entreprise : $20/utilisateur/mois, rapports d'utilisation, SSO</li>
+                    <li>Ultra : $200/mois, 500 Bobcoins</li>
+                </ul>
+            </li>
+            <li>Add-Ons Premium :
+                <ul>
+                    <li>Modernisation Java : $20/mois/utilisateur</li>
+                    <li>IBM i : $20/mois/utilisateur</li>
+                    <li>DevSecOps : $20/mois/utilisateur</li>
+                </ul>
+            </li>
+            <li>Note : 1 Bobcoin = $0.50 = 200,000 tokens de code</li>
+            <li>Tarification GA : ~$1200/an/développeur</li>
+        </ul>
+        <div class="slide-number">40/44</div>
+    </div>
+
+    <!-- Slide 41: NI+C Case Study -->
+    <div class="slide content-slide">
+        <h2>Cas d'utilisation client : NI+C</h2>
+        <ul>
+            <li>Défi : Systèmes IBM i critiques avec des programmes RPG fonctionnant depuis plus de 10 ans sans modifications</li>
+            <li>Problèmes : Documents de conception disparaissant, ingénieurs vieillissants, "boîte noire" de spécifications</li>
+            <li>Solution : La fonction Explain de Bob a analysé les programmes RPG complexes pour générer des documents de conception détaillés très précis</li>
+            <li>Résultats :
+                <ul>
+                    <li>Documents de conception précis pour du code de plus de 10 ans</li>
+                    <li>Logique complexe capturée dans des diagrammes Mermaid faciles à suivre</li>
+                    <li>Élimination de la dépendance aux ingénieurs vieillissants</li>
+                </ul>
+            </li>
+            <li>Témoignage : "Le document de conception détaillé créé par Bob était si précis qu'il a étonné même les ingénieurs expérimentés."</li>
+        </ul>
+        <div class="slide-number">41/44</div>
+    </div>
+
+    <!-- Slide 42: Supported Languages -->
+    <div class="slide content-slide">
+        <h2>Bob parle votre langue</h2>
+        <ul>
+            <li>Langues modernes :
+                <ul>
+                    <li>Java, Python, JavaScript, TypeScript, Go, Kotlin, Bash</li>
+                </ul>
+            </li>
+            <li>Langues héritées :
+                <ul>
+                    <li>RPG, COBOL, PL/SQL, C++</li>
+                </ul>
+            </li>
+            <li>Spécifiques à IBM i :
+                <ul>
+                    <li>RPG II, RPG III, RPG ILE, CL, DDS, SQL</li>
+                </ul>
+            </li>
+            <li>Message : Bob supporte l'ensemble de votre stack technologique, de l'hérité au moderne</li>
+        </ul>
+        <div class="slide-number">42/44</div>
+    </div>
+
+    <!-- Slide 43: Java Modernization -->
+    <div class="slide content-slide">
+        <h2>Moderniser les applications Java avec Bob</h2>
+        <ul>
+            <li>Mises à niveau Java :
+                <ul>
+                    <li>Chorégraphie le flux de mise à niveau de l'analyse aux mises à niveau pilotées par l'IA aux validations</li>
+                    <li>Fournit un résumé détaillé plus un diagramme Mermaid</li>
+                </ul>
+            </li>
+            <li>Replatforming Liberty :
+                <ul>
+                    <li>Propulsé par AMA (Application Modernization Accelerator)</li>
+                    <li>Rationalise la migration, réduisant les coûts et la complexité</li>
+                </ul>
+            </li>
+            <li>Modernisation UI :
+                <ul>
+                    <li>JSF/Struts à ReactJS</li>
+                    <li>JEE à Quarkus</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="slide-number">43/44</div>
+    </div>
+
+    <!-- Slide 44: Final Summary -->
+    <div class="slide content-slide dark-slide">
+        <h2>IBM Bob : Votre partenaire IA pour l'ensemble du SDLC</h2>
+        <ul>
+            <li>1. Partenaire SDLC prêt pour l'entreprise (pas seulement un assistant de codage)</li>
+            <li>2. Expert Power Systems (IBM i, AIX, RPG, COBOL, C++)</li>
+            <li>3. Six capacités clés (Comprendre, Expliquer, Refactoriser, Générer, Transformer, Tester)</li>
+            <li>4. Optimisation intelligente (Bobalytics)</li>
+            <li>5. Feuille de route d'adoption flexible (Plan → Adopt → Accelerate → Scale)</li>
+            <li>Démarrez votre voyage à bob.ibm.com/docs/ide</li>
+        </ul>
+        <div class="slide-number">44/44</div>
+    </div>
+</body>
+</html>
